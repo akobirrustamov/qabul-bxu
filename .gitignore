@@ -1,0 +1,67 @@
+# === GLOBAL ===
+.DS_Store
+*.log
+.env
+.env.*
+
+# === JAVA / SPRING BOOT ===
+/target/
+*.class
+*.jar
+*.war
+*.iml
+/.idea/
+/*.iws
+*.db
+*.h2.db
+*.log
+*.swp
+*.bak
+
+# Maven
+.mvn/
+!**/src/main/**
+!**/src/test/**
+
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ / Eclipse
+*.ipr
+*.iws
+.idea/
+*.classpath
+*.project
+*.settings/
+
+# === NODE / REACT ===
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.parcel-cache/
+**/.vite/
+
+# npm / yarn / pnpm lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# React build output
+**/build/
+
+# log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# VSCode config
+.vscode/
+
+# === OS Files ===
+Thumbs.db
+ehthumbs.db
+*.swp
+*~

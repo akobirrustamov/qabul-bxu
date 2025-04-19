@@ -1,0 +1,15 @@
+button{
+   color: rgb(136, 206, 32);
+
+}
+.f-table{
+    width: 100%;
+}
+.ch-table{
+    max-width: 1440px;
+}
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}

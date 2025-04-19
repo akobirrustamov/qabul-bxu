@@ -1,0 +1,60 @@
+.header_title {
+    padding-top: 100px;
+}
+.header_title .p{
+    font-size: 30px
+}
+.my-campus-div{
+    min-width: 500px;
+    height: 346px;
+
+}
+.my-campus-card{
+    display: flex;
+    flex-wrap: wrap;
+}
+.marginLeftJon{
+    margin-left: -70px
+}
+@media (max-width: 1100px) {
+    .marginLeftJon{
+        margin-left: -35px
+    }
+    .my-campus-div{
+        min-width: 450px;
+
+        height: 346px;
+
+    }
+}
+
+@media (max-width: 1000px) {
+    .marginLeftJon{
+        margin-left: 0px
+    }
+    .my-campus-card {
+        dispaly: block;
+
+    }
+    .my-campus-div{
+        min-width: 400px;
+        height: 346px;
+
+    }
+}
+
+
+@media (max-width: 450px) {
+    .marginLeftJon{
+        margin-left: 0px
+    }
+    .my-campus-card {
+        dispaly: block;
+
+    }
+    .my-campus-div{
+        min-width: 320px;
+        height: 346px;
+
+    }
+}

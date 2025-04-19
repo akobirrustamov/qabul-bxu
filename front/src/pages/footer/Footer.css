@@ -1,0 +1,27 @@
+.footer{
+    background-color: #181D38;
+    width: 100%;
+    padding-bottom: 0;
+}
+
+
+  .f-block{
+    max-width: 1440px;
+      display: flex;
+     margin: 0 auto;
+      gap: 20px;
+      padding: 30px;
+      padding-bottom: 10;
+  }
+.chiziq{
+    border: white;
+}
+  @media (max-width: 767px) {
+    .f-block{
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+  }

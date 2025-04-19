@@ -1,0 +1,157 @@
+.myNav {
+  background-color: #ffffff20;
+  width: 100%;
+  margin: auto;
+  height: 96px;
+}
+
+@media (max-width: 767px) {
+  .myNav {
+    background-color: #ffffff20;
+    width: 100%;
+    height: 40px;
+    padding: 0;
+  }
+}
+@media (min-width: 767px) {
+  .boxxx {
+    background-color: #ffffff20;
+  }
+}
+
+.mylogo {
+  width: 200px;
+  height: 64px;
+}
+.myMenu {
+  font-size: 16px;
+}
+.myBtn {
+  background-color: white;
+  height: 36px;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.myBtn1 {
+  background-color: #004c88;
+  height: 36px;
+  padding: 6px;
+
+  border-radius: 6px;
+}
+#dropdown1Link:hover + #dropdown1,
+#dropdown1:hover,
+#dropdown2Link:hover + #dropdown2,
+#dropdown2:hover,
+#dropdown3Link:hover + #dropdown3,
+#dropdown3:hover,
+#dropdown4Link:hover + #dropdown4,
+#dropdown4:hover {
+  display: block;
+}
+#menyucha {
+  width: 250px;
+  margin: 0;
+  padding-left: 8px;
+  background-color: #004c88;
+  border-radius: 5px;
+  text-decoration: none;
+  list-style: none;
+  transition-duration: 2s;
+}
+#ota-ul {
+  text-decoration: none;
+  color: rgb(233, 234, 235);
+  font-weight: 700;
+  animation-duration: 2s;
+  animation-name: mymove;
+}
+@keyframes mymove {
+}
+#ota-ul:hover {
+  color: rgb(210, 221, 231);
+  border-radius: 5px;
+  padding-right: 18px;
+  text-decoration: none;
+}
+#menyucha #ota-ul Link:hover,
+#menyucha #ota-ul Link:focus {
+  color: black;
+  background-color: rgb(251, 247, 247);
+  font-weight: bold;
+}
+Link {
+  list-style: none;
+  text-decoration: none;
+}
+#dropdown1Link,
+#dropdown2Link,
+#dropdown3Link,
+#dropdown4Link {
+  font-size: 16px;
+  color: aliceblue;
+  font-weight: 700;
+}
+.blur-container {
+  width: 100%;
+  background-color: rgb(246, 243, 243);
+}
+
+.decoration-none {
+  text-decoration: none;
+}
+
+/* Asosiy animatsiyalar */
+.blur-container {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Transition effektlari */
+nav a {
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+/* Mobil menyu animatsiyasi */
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.lg\:hidden {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Linklarning hover effekti */
+nav div a:hover {
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Mobil menyu linklari */
+.text-3xl & .text-2xl {
+  position: relative;
+}
+
+.text-3xl::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.text-3xl:hover::after {
+  width: 100%;
+}
