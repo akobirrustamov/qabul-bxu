@@ -403,26 +403,26 @@ function Appeals() {
         }
     };
 
-    const handleSubmitBall = async () => {
-        const ball = parseFloat(enteredBall);
+            const handleSubmitBall = async () => {
+                const ball = parseFloat(enteredBall);
 
-        if (isNaN(ball) || ball <= 0 || ball >= 189) {
-            alert("Ball 0 dan katta va 189 dan kichik bo'lishi kerak");
-            return;
-        }
+                if (isNaN(ball) || ball <= 0 || ball >= 189) {
+                    alert("Ball 0 dan katta va 189 dan kichik bo'lishi kerak");
+                    return;
+                }
 
-        try {
-            const token = localStorage.getItem("access_token");
-            await ApiCall(`/api/v1/admin/appeals/ball/${selectedAppealId}/${ball}/${token}`, "PUT", null, null, true);
-            alert("Ball muvaffaqiyatli saqlandi!");
-            setBallModalOpen(false);
-            setEnteredBall("");
-            await fetchAppeals(); // ro'yxatni yangilash
-        } catch (error) {
-            console.error("Ball yuborishda xatolik:", error);
-            alert("Ball yuborilmadi");
-        }
-    };
+                try {
+                    const token = localStorage.getItem("access_token");
+                    await ApiCall(`/api/v1/admin/appeals/ball/${selectedAppealId}/${ball}/${token}`, "PUT", null, null, true);
+                    alert("Ball muvaffaqiyatli saqlandi!");
+                    setBallModalOpen(false);
+                    setEnteredBall("");
+                    await fetchAppeals(); // ro'yxatni yangilash
+                } catch (error) {
+                    console.error("Ball yuborishda xatolik:", error);
+                    alert("Ball yuborilmadi");
+                }
+            };
 
 
     return (
@@ -695,7 +695,7 @@ function Appeals() {
                                 {appeal.status === 4 && "Shartnoma olgan"}
                             </td>
 
-                            {appeal.educationField?.ijodiy ?
+                            {appeal.educationField?.ijodiy || appeal.educationField?.educationForm?.educationType?.id==2 ?
 
                                 <td className="border border-gray-200 px-1 py-1 text-[14px]">
                                     <button

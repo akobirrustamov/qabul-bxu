@@ -13,6 +13,10 @@ function Appeals() {
     const [educationField, setEducationField] = useState([]);
     const [agents, setAgents] = useState([]);
     const [showFilter, setShowFilter] = useState(false)
+    const [ballModalOpen, setBallModalOpen] = useState(false);
+    const [selectedAppealId, setSelectedAppealId] = useState(null);
+    const [enteredBall, setEnteredBall] = useState("");
+
     const [filters, setFilters] = useState({
         firstName: "",
         lastName: "",
@@ -382,6 +386,28 @@ function Appeals() {
             console.error("Error updating appeal:", error);
         }
     };
+
+
+    const handleSubmitBall = async () => {
+        const ball = parseFloat(enteredBall);
+
+        if (isNaN(ball) || ball <= 0 || ball >= 189) {
+            alert("Ball 0 dan katta va 189 dan kichik bo'lishi kerak");
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("access_token");
+            await ApiCall(`/api/v1/admin/appeals/ball/${selectedAppealId}/${ball}/${token}`, "PUT", null, null, true);
+
+            setBallModalOpen(false);
+            setEnteredBall("");
+            await fetchAppeals(); // ro'yxatni yangilash
+        } catch (error) {
+            console.error("Ball yuborishda xatolik:", error);
+            alert("Ball yuborilmadi");
+        }
+    };
     return (
         <div>
             <Sidebar />
@@ -651,7 +677,20 @@ function Appeals() {
                                 {appeal.status === 3 && "Test yechgan"}
                                 {appeal.status === 4 && "Shartnoma olgan"}
                             </td>
-                            <td className="border border-gray-200 px-1 py-1 text-[14px]">{appeal.ball}</td>
+
+                                    <td className="border border-gray-200 px-1 py-1 text-[14px]">
+                                        <button
+                                            className="bg-blue-600 rounded p-1 text-white"
+                                            onClick={() => {
+                                                setSelectedAppealId(appeal.id);
+                                                setBallModalOpen(true);
+                                            }}
+                                        >
+                                            {appeal.ball ? appeal.ball : "0.0"}
+                                        </button>
+
+
+                            </td>
 
                             <td className="border border-gray-200 px-1 py-1 text-[14px] d-flex gap-1">
                                 <button
@@ -885,6 +924,30 @@ function Appeals() {
                         </form>
                     </div>
                 </Modal>
+
+                <Modal
+                    open={ballModalOpen}
+                    onClose={() => setBallModalOpen(false)}
+                    center
+                >
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Ballni kiriting</h2>
+                    <div className="flex flex-col bg-white rounded-lg shadow-lg p-6" style={{ width: "400px" }}>
+                        <input
+                            type="number"
+                            value={enteredBall}
+                            onChange={(e) => setEnteredBall(e.target.value)}
+                            placeholder="0 dan 189 gacha"
+                            className="border border-gray-300 rounded-md p-2 mb-4"
+                        />
+                        <button
+                            onClick={handleSubmitBall}
+                            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                        >
+                            Saqlash
+                        </button>
+                    </div>
+                </Modal>
+
             </div>
         </div>
     );

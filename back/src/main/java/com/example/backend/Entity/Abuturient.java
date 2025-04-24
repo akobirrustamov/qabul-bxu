@@ -56,6 +56,8 @@ public class Abuturient {
     private Integer status;
     private String ball;
     private Boolean getContract;
+    @ManyToOne
+    private District district;
 
     public Abuturient(String firstName, String lastName, String fatherName, String phone, String additionalPhone, Boolean language, AppealType appealType, EducationField educationField, LocalDateTime createdAt, User agent, Boolean isActive, Integer status, LocalDateTime enrolledAt, Integer contractNumber, String passportNumber, String passportPin) {
         this.firstName = firstName;

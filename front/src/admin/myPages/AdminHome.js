@@ -226,7 +226,7 @@ const AdminHome = () => {
                                     <h2 className="text-xl font-semibold whitespace-nowrap">📊  kunlik statistika</h2>
                                     <Select
                                         className="react-select-container  "
-                               a         classNamePrefix="react-select"
+                                        a         classNamePrefix="react-select"
                                         options={agentOptions}
                                         value={agentOptions.find(opt => opt.value === selectedAgent) || null}
                                         onChange={(opt) => setSelectedAgent(opt ? opt.value : "")}
