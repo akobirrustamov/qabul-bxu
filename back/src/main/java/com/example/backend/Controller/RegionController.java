@@ -20,10 +20,10 @@ import java.util.List;
 public class RegionController {
 
     private final RegionRepo regionRepo;
-
     @GetMapping
     public HttpEntity<?> getAllRegions(){
         List<Region> all = regionRepo.findAll();
+        System.out.println(all);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 

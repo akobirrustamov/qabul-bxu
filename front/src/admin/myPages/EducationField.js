@@ -12,6 +12,7 @@
         const [filterText, setFilterText] = useState(""); // For search input
         const [subject1, setSubject1] = useState([])
         const [subject2, setSubject2] = useState([])
+
         const [educationFieldTestSubject, setEducationFieldTestSubject] = useState({
             fieldId:null,
             test1:null,
@@ -37,6 +38,7 @@
             fetchEducationForms();
             getEducationStatus1()
             getEducationStatus2()
+
         }, []);
 
         const fetchEducationFields = async () => {
@@ -216,14 +218,14 @@
                                     <td className="border border-gray-300 px-1 py-1 text-[14px]">{field.educationForm?.name}</td>
                                     <td className="border border-gray-300 px-1 py-1 text-[14px]">{field.educationDuration}</td>
                                     <td className="border border-gray-300 px-1 py-1 text-[14px]">{field.price}</td>
-                                    <td className="border border-gray-300 px-1 py-1 text-[14px]">{
-                                        field.testEducationField===null?
-                                    <button   className="bg-red-500 text-white px-2 py-1 rounded"
+                                    <td className="border border-gray-300 px-1 py-1 text-[14px]">
+                                        {
+                                        field.educationForm.educationType.id===null?
+                                        <button   className="bg-red-500 text-white px-2 py-1 rounded"
                                               onClick={()=>{
                                                 setModalOpenSubject(!modalOpenSubject);
                                                   setEducationFieldTestSubject({...educationFieldTestSubject, fieldId: field.id, test1:  null, test2:  null, test3:  null, test4:  null, test5:  null});
-                                              }}
-                                    >qo'sish</button>:
+                                              }}>qo'sish</button>:
                                             <button
                                                 onClick={()=>{
                                                     setModalOpenSubject(!modalOpenSubject);
@@ -231,7 +233,8 @@
                                                     setEducationFieldTestSubject({...educationFieldTestSubject, fieldId: field.id, test1:  field.testEducationField.test1.id, test2:  field.testEducationField.test2.id, test3:  field.testEducationField.test3.id, test4:  field.testEducationField.test4.id, test5:  field.testEducationField.test5.id,});
                                                 }}
                                                 className="bg-yellow-500 text-white px-2 py-1 rounded mr-2">tahrirlash</button>
-                                    }</td>
+                                    }
+                                    </td>
                                     <td className="border border-gray-300 px-1 py-1 text-[14px]">
                                         <input
                                             checked={field.isActive}

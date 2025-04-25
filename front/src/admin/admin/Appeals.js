@@ -661,6 +661,7 @@ function Appeals() {
                         <th className="border border-gray-300 px-1 py-1 text-[14px]">Agent</th>
                         <th className="border border-gray-300 px-1 py-1 text-[14px]">Sana</th>
                         <th className="border border-gray-300 px-1 py-1 text-[14px]">Status</th>
+                        <th className="border border-gray-300 px-1 py-1 text-[14px]">Manzil</th>
                         <th className="border border-gray-300 px-1 py-1 text-[14px]">Ball</th>
                         <th className="border border-gray-300 px-1 py-1 text-[14px]"></th>
                     </tr>
@@ -687,6 +688,10 @@ function Appeals() {
                             <td className="border border-gray-200 px-1 py-1 text-[14px]">{appeal.agent?.name}</td>
                             <td className="border border-gray-200 px-1 py-1 text-[14px]">
                                 {new Date(appeal.createdAt).toLocaleString()}
+                            </td>
+                            <td className="border border-gray-200 px-1 py-1 text-[12px]">
+                                {appeal?.district?.region.name}<br/>
+                                {appeal?.district?.name}
                             </td>
                             <td className="border border-gray-200 px-1 py-1 text-[10px]">
                                 {appeal.status === 1 && "Telefon raqam kiritgan"}

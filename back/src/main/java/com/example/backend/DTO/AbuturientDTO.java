@@ -21,4 +21,5 @@ public class AbuturientDTO {
     private Integer educationFieldId;
     private Boolean isActive;
     private Integer status;
+    private Integer districtId;
 }

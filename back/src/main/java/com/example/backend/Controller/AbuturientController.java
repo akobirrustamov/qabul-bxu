@@ -1,10 +1,7 @@
     package com.example.backend.Controller;
 
     import com.example.backend.DTO.AbuturientDTO;
-    import com.example.backend.Entity.Abuturient;
-    import com.example.backend.Entity.AgentPath;
-    import com.example.backend.Entity.History;
-    import com.example.backend.Entity.User;
+    import com.example.backend.Entity.*;
     import com.example.backend.Repository.*;
     import com.example.backend.Services.AuthService.AuthService;
     import com.itextpdf.text.*;
@@ -42,6 +39,7 @@
         private final AppealTypeRepo appealTypeRepo;
         private final EducationFieldRepo educationFieldRepo;
         private final AgentPathRepo agentPathRepo;
+        private final DistrictRepo districtRepo;
 
         @PostMapping
         public HttpEntity<?> addAbuturient(@RequestBody AbuturientDTO request) {
@@ -74,8 +72,13 @@
                 return ResponseEntity.ok(null);
             }
             if (abuturient.getStatus() == 0) {
+                District district =null;
+                Optional<District> byId = districtRepo.findById(request.getDistrictId());
+                if (byId.isPresent()) {
+                     district = byId.get();
+                }
 
-               abuturient.setStatus(1);
+                abuturient.setStatus(1);
                abuturient.setFirstName(request.getFirstName());
                abuturient.setLastName(request.getLastName());
                abuturient.setPhone(request.getPhone());
@@ -84,6 +87,7 @@
                abuturient.setEducationField(educationFieldRepo.findById(request.getEducationFieldId()).orElseThrow());
                abuturient.setEnrolledAt(LocalDateTime.now());
 
+               abuturient.setDistrict(district);
 
                abuturientRepo.save(abuturient);
             }
