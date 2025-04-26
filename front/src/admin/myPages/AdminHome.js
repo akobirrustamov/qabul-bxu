@@ -26,8 +26,8 @@ const AdminHome = () => {
     useEffect(() => {
         fetchStatistics();
         fetchDailyStats();
-        fetchAgentDailyStats(selectedAgent);
-    }, [sortOrder, selectedAgent]);
+        fetchAgentDailyStats();
+    }, []);
 
     const fetchAgentDailyStats = async (agentPhone = "all") => {
         try {
@@ -76,6 +76,7 @@ const AdminHome = () => {
             console.error("Error fetching daily stats:", error);
         }
     };
+
     const agentOptions = statistics.map((agent) => ({
         value: agent.phone,
         label: `${agent.name} (${agent.phone})`,
@@ -131,59 +132,103 @@ const AdminHome = () => {
     const botAgents = statistics.filter(agent => isBotAgent(agent.phone));
     const siteAgents = statistics.filter(agent => !isBotAgent(agent.phone));
 
+    // Calculate day before yesterday manually
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const dayBeforeYesterday = new Date(yesterday);
+    dayBeforeYesterday.setDate(dayBeforeYesterday.getDate() - 1);
+
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const todayStr = formatDate(today);
+    const yesterdayStr = formatDate(yesterday);
+    const dayBeforeYesterdayStr = formatDate(dayBeforeYesterday);
+
+
     const renderTable = (title, agents) => (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
             {agents.length === 0 ? (
                 <p className="text-gray-500">Ma'lumot topilmadi</p>
             ) : (
-                <table className="min-w-full table-auto border-collapse border border-gray-300">
-                    <thead className="bg-gray-100">
-                    <tr>
-                        <th className="border border-gray-300 px-4 py-2 text-left">Agent nomi</th>
-                        <th className="border border-gray-300 px-4 py-2 text-left">Telefon raqam</th>
-                        <th className="border border-gray-300 px-4 py-2 text-left">Abituriyentlar soni</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {agents.map((agent, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                            <td className="border border-gray-300 px-4 py-2">{agent.name}</td>
-                            <td className="border border-gray-300 px-4 py-2">{agent.phone}</td>
-                            <td className="border border-gray-300 px-4 py-2">{agent.count}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                    <div className="overflow-y-auto max-h-[500px]">
+                        <table className="min-w-full table-auto border-collapse border border-gray-300">
+                            <thead className="bg-gray-100 sticky top-0 z-10">
+                            <tr>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">#</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">Agent nomi</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">Telefon raqam</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">Abituriyentlar soni</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">{dayBeforeYesterdayStr}</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">{yesterdayStr}</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left text-[12px]">{todayStr}</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {agents.map((agent, index) => {
+                                const agentDaily = agentDailyStats.find(a => a.phone === agent.phone)?.daily || {};
+
+                                const dayBeforeYesterdayCount = agentDaily[dayBeforeYesterdayStr] || 0;
+                                const yesterdayCount = agentDaily[yesterdayStr] || 0;
+                                const todayCount = agentDaily[todayStr] || 0;
+
+                                return (
+                                    <tr key={index} className="hover:bg-gray-50">
+                                        <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{agent.name}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{agent.phone}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{agent.count}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{dayBeforeYesterdayCount}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{yesterdayCount}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{todayCount}</td>
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             )}
         </div>
     );
 
+
     const renderDailyStatsTable = () => (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold mb-4">📊 Kunlik ro'yxatdan o'tish jadvali</h2>
+
             {dailyStats.length === 0 ? (
                 <p className="text-gray-500">Ma'lumot topilmadi</p>
             ) : (
-                <table className="min-w-full table-auto border-collapse border border-gray-300">
-                    <thead className="bg-gray-100">
-                    <tr>
-                        <th className="border border-gray-300 px-4 py-2 text-left">Sana</th>
-                        <th className="border border-gray-300 px-4 py-2 text-left">Ro'yxatdan o'tganlar soni</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {dailyStats.map((entry, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                            <td className="border border-gray-300 px-4 py-2">{entry.date}</td>
-                            <td className="border border-gray-300 px-4 py-2">{entry.count}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                    <div className="overflow-y-auto max-h-[500px]">
+                        <table className="min-w-full table-auto border-collapse border border-gray-300">
+                            <thead className="bg-gray-100 sticky top-0 z-10">
+                            <tr>
+                                <th className="border border-gray-300 px-4 py-2 text-left">Sana</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left">Ro'yxatdan o'tganlar soni</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {dailyStats.map((entry, index) => (
+                                <tr key={index} className="hover:bg-gray-50">
+                                    <td className="border border-gray-300 px-4 py-2">{entry.date}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{entry.count}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             )}
         </div>
     );
+
+
     const exportAgentDailyStatsToExcel = () => {
         if (agentDailyStats.length === 0) return;
 
@@ -218,69 +263,8 @@ const AdminHome = () => {
                             <span className="font-bold">{totalCount} ta</span>
                         </div>
 
-                        {/* Agentlar bo'yicha kunlik statistika */}
-                        {/* Agent selection and table display */}
-                        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <div className="flex gap-2 items-center w-full max-w-md">
-                                    <h2 className="text-xl font-semibold whitespace-nowrap">📊  kunlik statistika</h2>
-                                    <Select
-                                        className="react-select-container  "
-                                        a         classNamePrefix="react-select"
-                                        options={agentOptions}
-                                        value={agentOptions.find(opt => opt.value === selectedAgent) || null}
-                                        onChange={(opt) => setSelectedAgent(opt ? opt.value : "")}
-                                        isSearchable
-                                        placeholder="Agentni qidiring..."
-                                        noOptionsMessage={() => "Natija topilmadi"}
-                                        isClearable
-                                    />
-                                </div>
-                                <button
-                                    onClick={exportAgentDailyStatsToExcel}
-                                    className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600"
-                                >
-                                    Excelga yuklash
-                                </button>
-                            </div>
-
-                            <div className="overflow-x-auto">
-                                {selectedAgent && agentDailyStats.length > 0 ? (
-                                    <table className="min-w-full table-auto border-collapse border border-gray-300">
-                                        <thead className="bg-gray-100">
-                                        <tr>
-                                            <th className="border px-4 py-2">Agent nomi</th>
-                                            <th className="border px-4 py-2">Telefon raqam</th>
-                                            <th className="border px-4 py-2">Sana</th>
-                                            <th className="border px-4 py-2">Ro'yxatdan o'tganlar</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {agentDailyStats.flatMap((agent, index) => {
-                                            const sortedEntries = Object.entries(agent.daily || {}).sort(
-                                                ([a], [b]) => new Date(b) - new Date(a) // show latest dates first
-                                            );
-                                            return sortedEntries.map(([date, count], i) => (
-                                                <tr key={`${index}-${i}`} className="hover:bg-gray-50">
-                                                    <td className="border px-4 py-2">{agent.name}</td>
-                                                    <td className="border px-4 py-2">{agent.phone}</td>
-                                                    <td className="border px-4 py-2">{date}</td>
-                                                    <td className="border px-4 py-2">{count}</td>
-                                                </tr>
-                                            ));
-                                        })}
-                                        </tbody>
-
-                                    </table>
-                                ) : (
-                                    <p className="text-gray-500">Agent tanlang...</p>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Sayt agentlar */}
                         <div className="flex justify-between items-center mb-2">
-                            <h2 className="text-xl font-semibold">🧑‍💻 Sayt orqali tayinlangan agentlar</h2>
+                            <h2 className="text-xl font-semibold">🧑‍💻 Sayt orqali tayinlangan agentlar: <span className={"text-red-500"}>{siteAgents?.length} ta</span></h2>
                             <button
                                 onClick={() => exportAgentsToExcel(siteAgents, "sayt_agentlar.xlsx")}
                                 className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600"
@@ -292,7 +276,7 @@ const AdminHome = () => {
 
                         {/* Bot agentlar */}
                         <div className="flex justify-between items-center mb-2 mt-6">
-                            <h2 className="text-xl font-semibold">🤖 Bot orqali tayinlangan agentlar</h2>
+                            <h2 className="text-xl font-semibold">🤖 Bot orqali tayinlangan agentlar: <span className={"text-red-500"}>{botAgents?.length} ta</span></h2>
                             <button
                                 onClick={() => exportAgentsToExcel(botAgents, "bot_agentlar.xlsx")}
                                 className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600"
@@ -306,33 +290,33 @@ const AdminHome = () => {
 
                         {/*agent daily*/}
 
-                        <div className="flex justify-between items-center mb-4">
-                            <div className="flex gap-2 items-center">
-                                <h2 className="text-xl font-semibold">📊 Agentlar bo'yicha kunlik statistika</h2>
-                                <select
-                                    value={selectedAgent}
-                                    onChange={(e) => setSelectedAgent(e.target.value)}
-                                    className="border px-3 py-1 rounded-md text-sm"
-                                >
-                                    <option value="all">Barcha agentlar</option>
-                                    {[...new Set(statistics.map(agent => agent.phone))].map((phone) => {
-                                        const name = statistics.find(agent => agent.phone === phone)?.name;
-                                        return (
-                                            <option key={phone} value={phone}>
-                                                {name} ({phone})
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
+                        {/*<div className="flex justify-between items-center mb-4">*/}
+                        {/*    <div className="flex gap-2 items-center">*/}
+                        {/*        <h2 className="text-xl font-semibold">📊 Agentlar bo'yicha kunlik statistika</h2>*/}
+                        {/*        <select*/}
+                        {/*            value={selectedAgent}*/}
+                        {/*            onChange={(e) => setSelectedAgent(e.target.value)}*/}
+                        {/*            className="border px-3 py-1 rounded-md text-sm"*/}
+                        {/*        >*/}
+                        {/*            <option value="all">Barcha agentlar</option>*/}
+                        {/*            {[...new Set(statistics.map(agent => agent.phone))].map((phone) => {*/}
+                        {/*                const name = statistics.find(agent => agent.phone === phone)?.name;*/}
+                        {/*                return (*/}
+                        {/*                    <option key={phone} value={phone}>*/}
+                        {/*                        {name} ({phone})*/}
+                        {/*                    </option>*/}
+                        {/*                );*/}
+                        {/*            })}*/}
+                        {/*        </select>*/}
+                        {/*    </div>*/}
 
-                            <button
-                                onClick={exportAgentDailyStatsToExcel}
-                                className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600"
-                            >
-                                Excelga yuklash
-                            </button>
-                        </div>
+                        {/*    <button*/}
+                        {/*        onClick={exportAgentDailyStatsToExcel}*/}
+                        {/*        className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600"*/}
+                        {/*    >*/}
+                        {/*        Excelga yuklash*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
 
 
 

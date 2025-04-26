@@ -236,7 +236,7 @@ function DataForm() {
     const customStyles = {
         control: (provided) => ({
             ...provided,
-            minHeight: '44px',
+            minHeight: '40px',
             borderRadius: '0.375rem',
             borderColor: '#d1d5db',
             '&:hover': {
@@ -263,7 +263,6 @@ function DataForm() {
             zIndex: 9999
         })
     };
-
     return (
         <div>
             <Header />
@@ -277,7 +276,7 @@ function DataForm() {
                         className="overlay bg-black bg-opacity-50 pt-24"
                         data-stellar-background-ratio="0.5"
                     >
-                        <div className="container mx-auto px-4">
+                        <div className="container mx-auto px-4 ">
                             <div className="row">
                                 <div className="col-lg-12 col-md-12 col-12 text-center text-white my-10 ">
                                     <h1 className="text-2xl sm:text-3xl font-bold mt-16">
@@ -422,7 +421,7 @@ function DataForm() {
 
                                                             {/* Education Field */}
                                                             <div>
-                                                                <label className="block text-sm font-medium text-gray-700 mb-1">Yo'nalish</label>
+                                                                <label className="block text-sm font-medium text-gray-700 mb-1 z-auto">Yo'nalish</label>
                                                                 <Select
                                                                     name="educationFieldId"
                                                                     value={educationField.find(option => option.value === abuturient.educationFieldId)}
@@ -432,7 +431,8 @@ function DataForm() {
                                                                     isDisabled={!abuturient.educationFormId}
                                                                     isSearchable
                                                                     styles={customStyles}
-
+                                                                    menuPortalTarget={document.body}
+                                                                    menuPosition="fixed"
                                                                     required
                                                                 />
                                                             </div>

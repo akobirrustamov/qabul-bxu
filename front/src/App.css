@@ -58,3 +58,9 @@
 
     }
 }
+
+
+.react-select__menu {
+    z-index: 9999 !important;
+    position: fixed !important;
+}
