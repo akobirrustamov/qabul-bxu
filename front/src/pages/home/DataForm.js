@@ -122,18 +122,34 @@ function DataForm() {
         }
     };
 
+    // const getEducationField = async (id) => {
+    //     try {
+    //         const response = await ApiCall(`/api/v1/education-field/${id}`, "GET", null, null, true);
+    //         setEducationField(response.data.map(field => ({
+    //             value: field.id,
+    //             label: field.name
+    //         })));
+    //     } catch (error) {
+    //         console.error("Error fetching education fields:", error);
+    //     }
+    // };
+
+
     const getEducationField = async (id) => {
         try {
             const response = await ApiCall(`/api/v1/education-field/${id}`, "GET", null, null, true);
-            setEducationField(response.data.map(field => ({
-                value: field.id,
-                label: field.name
-            })));
+            setEducationField(response.data
+                .filter(field => field.isActive === true) // Filter only active fields
+                .map(field => ({
+                    value: field.id,
+                    label: field.name,
+                    status: field.isActive // Include status in the option object
+                }))
+            );
         } catch (error) {
             console.error("Error fetching education fields:", error);
         }
     };
-
     const handleSave = async (e) => {
         e.preventDefault();
         if (
