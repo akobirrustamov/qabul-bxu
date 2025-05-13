@@ -33,14 +33,13 @@ public class TestController {
 
     @GetMapping("/add/update")
     public HttpEntity<?> addOrUpdateTests() {
-        String filePath = System.getProperty("user.home") + "/Downloads/test.xlsx";
-//        String filePath =  "./test.xlsx";
+//        String filePath = System.getProperty("user.home") + "/Downloads/test.xlsx";
+        String filePath =  "./test.xlsx";
 
         try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
             Workbook workbook = new XSSFWorkbook(fileInputStream);
-            Sheet sheet = workbook.getSheetAt(0); // Assume data is in the first sheet
-            DataFormatter dataFormatter = new DataFormatter(); // Formatter to convert all values to String
-
+            Sheet sheet = workbook.getSheetAt(0);
+            DataFormatter dataFormatter = new DataFormatter();
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
 
