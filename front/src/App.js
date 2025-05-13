@@ -15,6 +15,7 @@ import EducationPrize from "./pages/educationPrize/EducationPrize";
 
 import LoginAdmin from "./admin/LoginAdmin";
 import EducationForm from "./admin/myPages/EducationForm";
+import ForeignForm from "./pages/home/ForeignForm";
 import EducationField from "./admin/myPages/EducationField";
 import EducationType from "./admin/myPages/EducationType";
 import MyAppeals from "./admin/myPages/Appeals";
@@ -91,9 +92,16 @@ function App() {
         <Route path={"/dashboard/qr-code"} element={<MyQRCode />} />
         <Route path={"/dashboard/settings"} element={<Settings />} />
         <Route path={"/dashboard/staff"} element={<Staff />} />
-        <Route path={"/dashboard/education-socialMedia"} element={<SocialMedia />}/>
+        <Route
+          path={"/dashboard/education-socialMedia"}
+          element={<SocialMedia />}
+        />
         <Route path={"/dashboard/education-form"} element={<EducationForm />} />
-        <Route path={"/dashboard/education-field"} element={<EducationField />}/>
+        <Route path={"/data-form-foreign"} element={<ForeignForm />} />
+        <Route
+          path={"/dashboard/education-field"}
+          element={<EducationField />}
+        />
         <Route path={"/dashboard/education-type"} element={<EducationType />} />
         <Route path={"/*"} element={<PageNotFound />} />
 
