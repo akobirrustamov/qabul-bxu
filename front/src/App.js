@@ -82,6 +82,7 @@ function App() {
         <Route path={"/education-type"} element={<EducationTypeInstitute />} />
         <Route path={"/education-exam"} element={<EducationExam />} />
         <Route path={"/education-offer"} element={<EducationOffer />} />
+        <Route path={"/data-form-foreign"} element={<ForeignForm />} />
 
         {/* <Route path={"/education-social"} element={<EducationSocial />} />
         <Route path={"/education-prize"} element={<EducationPrize />} /> */}
@@ -97,7 +98,6 @@ function App() {
           element={<SocialMedia />}
         />
         <Route path={"/dashboard/education-form"} element={<EducationForm />} />
-        <Route path={"/data-form-foreign"} element={<ForeignForm />} />
         <Route
           path={"/dashboard/education-field"}
           element={<EducationField />}

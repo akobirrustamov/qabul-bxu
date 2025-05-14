@@ -369,7 +369,7 @@ function ForeignForm() {
                       <Zoom>
                         <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl mx-auto text-gray-800">
                           <h2 className="text-2xl font-bold mb-6 text-center">
-                            Ro'yxatdan o'tish
+                            Ro'yxatdan o'tish (Регистрация)
                           </h2>
                           <form onSubmit={handleSave} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -406,7 +406,7 @@ function ForeignForm() {
                               {/* Father's Name */}
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                  Sharifi(Шарифи)
+                                  Sharif(Шариф)
                                 </label>
                                 <input
                                   type="text"

@@ -1,6 +1,7 @@
     package com.example.backend.Controller;
 
     import com.example.backend.DTO.AbuturientDTO;
+    import com.example.backend.DTO.ForeignAbuturientDTO;
     import com.example.backend.Entity.*;
     import com.example.backend.Repository.*;
     import com.example.backend.Services.AuthService.AuthService;
@@ -40,6 +41,30 @@
         private final EducationFieldRepo educationFieldRepo;
         private final AgentPathRepo agentPathRepo;
         private final DistrictRepo districtRepo;
+
+        @PostMapping("/foreign")
+        public HttpEntity<?> addForeign(@RequestBody ForeignAbuturientDTO request) {
+            Abuturient abuturient = abuturientRepo.findByPhone(request.getPhone());
+            if (Objects.isNull(abuturient)) {
+               abuturient= new Abuturient();
+            }
+            if (abuturient.getStatus() == 0) {
+                abuturient.setStatus(1);
+                abuturient.setFirstName(request.getFirstName());
+                abuturient.setLastName(request.getLastName());
+                abuturient.setPhone(request.getPhone());
+                abuturient.setFatherName(request.getFatherName());
+                abuturient.setAppealType(appealTypeRepo.findById(request.getAppealTypeId()).orElseThrow());
+                abuturient.setEducationField(educationFieldRepo.findById(request.getEducationFieldId()).orElseThrow());
+                abuturient.setEnrolledAt(LocalDateTime.now());
+                abuturient.setIsForeign(true);
+                abuturient.setCountry(request.getCountry());
+                abuturient.setCity(request.getCity());
+                abuturientRepo.save(abuturient);
+            }
+            return ResponseEntity.ok(abuturient);
+
+        }
 
         @PostMapping
         public HttpEntity<?> addAbuturient(@RequestBody AbuturientDTO request) {

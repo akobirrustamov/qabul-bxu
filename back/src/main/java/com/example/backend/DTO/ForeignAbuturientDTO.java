@@ -1,7 +1,5 @@
 package com.example.backend.DTO;
 
-import com.example.backend.Entity.AppealType;
-import com.example.backend.Entity.EducationField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AbuturientDTO {
+public class ForeignAbuturientDTO {
     private String phone;
     private Integer agentId;
     private String firstName;
@@ -21,6 +19,6 @@ public class AbuturientDTO {
     private Integer educationFieldId;
     private Boolean isActive;
     private Integer status;
-    private Integer districtId;
-
+    private String country;
+    private String city;
 }
