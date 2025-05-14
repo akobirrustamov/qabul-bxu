@@ -33,8 +33,9 @@ function ForeignForm() {
     educationTypeId: "",
     educationFormId: "",
     educationFieldId: "",
-    regionId: "",
-    districtId: "",
+    status: 0,
+    country: "",
+    city: "",
     createdAt: new Date().toISOString(),
   });
 
@@ -59,27 +60,27 @@ function ForeignForm() {
     }
   };
 
-  const fetchRegionDistricts = async (regionId) => {
-    setLoadingDistricts(true);
-    try {
-      const response = await ApiCall(
-        `/api/v1/district/${regionId}`,
-        "GET",
-        null,
-        null
-      );
-      setDistricts(
-        response.data.map((district) => ({
-          value: district.id,
-          label: district.name,
-        }))
-      );
-    } catch (error) {
-      console.error("Error fetching districts:", error);
-    } finally {
-      setLoadingDistricts(false);
-    }
-  };
+  // const fetchRegionDistricts = async (regionId) => {
+  //   setLoadingDistricts(true);
+  //   try {
+  //     const response = await ApiCall(
+  //       `/api/v1/district/${regionId}`,
+  //       "GET",
+  //       null,
+  //       null
+  //     );
+  //     setDistricts(
+  //       response.data.map((district) => ({
+  //         value: district.id,
+  //         label: district.name,
+  //       }))
+  //     );
+  //   } catch (error) {
+  //     console.error("Error fetching districts:", error);
+  //   } finally {
+  //     setLoadingDistricts(false);
+  //   }
+  // };
 
   // const getPhoneData = async () => {
   //   try {
@@ -205,8 +206,8 @@ function ForeignForm() {
       !abuturient.educationTypeId ||
       !abuturient.educationFormId ||
       !abuturient.educationFieldId ||
-      !abuturient.regionId ||
-      !abuturient.districtId
+      !abuturient.country ||
+      !abuturient.city
     ) {
       alert("Iltimos, barcha maydonlarni to'ldiring!");
       return;
@@ -214,8 +215,8 @@ function ForeignForm() {
 
     try {
       const response = await ApiCall(
-        `/api/v1/abuturient`,
-        "PUT",
+        `/api/v1/abuturient/foreign`,
+        "POST",
         abuturient,
         null,
         true
@@ -245,6 +246,16 @@ function ForeignForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "phone") {
+      if (value.length > 20) return; // Limit the length of the phone number
+      if (value.startsWith("+") && /^\+\d{0,20}$/.test(value)) {
+        if (value.length <= 20) setTel(value);
+      } else if (value === "+") {
+        setTel(value);
+      } else {
+        setTel("+");
+      }
+    }
     setAbuturient({ ...abuturient, [name]: value });
   };
 
@@ -267,19 +278,26 @@ function ForeignForm() {
         educationFieldId: "",
       }));
       setEducationField([]);
-    } else if (name === "regionId") {
-      fetchRegionDistricts(selectedOption.value);
+    } else if (name === "country") {
+      // fetchRegionDistricts(selectedOption.value);
       setAbuturient((prev) => ({
         ...prev,
-        districtId: "",
+        city: "",
       }));
       setDistricts([]);
     }
   };
 
   const handleNavigate = () => {
-    localStorage.clear();
-    navigate("/test", { state: { phone } });
+    // localStorage'ni tozalash shart emas
+    // Kerakli ma'lumotlarni saqlab qolamiz
+    localStorage.setItem("phone", formData?.phone || phone);
+
+    navigate("/test", {
+      state: {
+        phone: formData?.phone || phone,
+      },
+    });
   };
 
   const handleDownloadPDF = async () => {
@@ -406,7 +424,7 @@ function ForeignForm() {
                               {/* Father's Name */}
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                  Sharif(Шариф)
+                                  Sharif(Отчество)
                                 </label>
                                 <input
                                   type="text"
@@ -424,13 +442,11 @@ function ForeignForm() {
                                 </label>
                                 <input
                                   type="text"
-                                  id="phone-input"
-                                  onChange={handleChange}
-                                  onClick={() => setTel("+")}
+                                  name="phone"
+                                  onChange={handleInputChange}
                                   value={tel}
                                   aria-describedby="helper-text-explanation"
                                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-100"
-                                  placeholder="+998 __ ___-__-__"
                                   required
                                 />
                               </div>
@@ -442,8 +458,8 @@ function ForeignForm() {
                                 </label>
                                 <input
                                   type="text"
-                                  name="regionId"
-                                  value={abuturient.regionId}
+                                  name="country"
+                                  value={abuturient.country}
                                   onChange={handleInputChange}
                                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                   required
@@ -480,8 +496,8 @@ function ForeignForm() {
                                 </label>
                                 <input
                                   type="text"
-                                  name="districtId"
-                                  value={abuturient.districtId}
+                                  name="city"
+                                  value={abuturient.city}
                                   onChange={handleInputChange}
                                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                   required
@@ -491,7 +507,7 @@ function ForeignForm() {
                               {/* Appeal Type */}
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                  Ariza turi(Тип приложения)
+                                  Ariza turi(Тип обращения)
                                 </label>
                                 <Select
                                   name="appealTypeId"

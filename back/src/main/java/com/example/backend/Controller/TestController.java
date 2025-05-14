@@ -101,7 +101,7 @@ public class TestController {
             testScoreRepo.save(testScore);
         }
         System.out.println(testScore);
-        if (testScore.getStatus() == 0) {
+        if (testScore.getStatus() == 0 || testScore.getStatus() == null) {
             TestSubject test1 = abiturient.getEducationField().getTestEducationField().getTest1();
             TestSubject test2 = abiturient.getEducationField().getTestEducationField().getTest2();
             TestSubject test3 = abiturient.getEducationField().getTestEducationField().getTest3();

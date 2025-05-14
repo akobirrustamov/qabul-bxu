@@ -44,11 +44,12 @@
 
         @PostMapping("/foreign")
         public HttpEntity<?> addForeign(@RequestBody ForeignAbuturientDTO request) {
+            System.out.println(request);
             Abuturient abuturient = abuturientRepo.findByPhone(request.getPhone());
             if (Objects.isNull(abuturient)) {
                abuturient= new Abuturient();
             }
-            if (abuturient.getStatus() == 0) {
+            if (abuturient.getStatus() == null) {
                 abuturient.setStatus(1);
                 abuturient.setFirstName(request.getFirstName());
                 abuturient.setLastName(request.getLastName());
