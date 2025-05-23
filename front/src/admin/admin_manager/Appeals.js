@@ -43,7 +43,6 @@ function Appeals() {
     educationTypeId: "",
     educationFormId: "",
     educationFieldId: "",
-    isActive: true,
   });
 
   useEffect(() => {
@@ -73,6 +72,8 @@ function Appeals() {
         true
       );
       setAppeals(response.data.content);
+
+      console.log(response.data);
       setPagination((prev) => ({
         ...prev,
         totalPages: response.data.totalPages,
@@ -329,7 +330,6 @@ function Appeals() {
       educationTypeId,
       educationFormId,
       educationFieldId,
-      isActive: appeal.isActive || true,
     });
 
     // Open the modal
@@ -399,21 +399,11 @@ function Appeals() {
   };
   const validateInputs = () => {
     if (
-      editData.passportPin.length == 0 ||
-      !editData.firstName.trim() ||
-      !editData.lastName.trim() ||
-      !editData.appealTypeId ||
-      !editData.educationTypeId ||
-      !editData.educationFormId ||
-      !editData.educationFieldId
-    ) {
-      return true;
-    }
-    if (
       editData.passportPin.length !== 14 ||
       !/^[A-Z]{2}\d{7}$/.test(editData.passportNumber) ||
       !editData.firstName.trim() ||
       !editData.lastName.trim() ||
+      !editData.fatherName.trim() ||
       !editData.appealTypeId ||
       !editData.educationTypeId ||
       !editData.educationFormId ||
@@ -421,7 +411,6 @@ function Appeals() {
     ) {
       return false;
     }
-
     return true;
   };
   const handleEditSubmit = async () => {
@@ -430,16 +419,15 @@ function Appeals() {
     if (!validateInputs()) return;
 
     try {
-      const response = await ApiCall(
+      await ApiCall(
         `/api/v1/admin/appeals/${editData.id}/${token}`,
         "PUT",
         editData,
         null,
         true
       );
-
       setEditModalOpen(false);
-      fetchAppeals();
+      fetchAppeals(); // Refresh appeals
     } catch (error) {
       console.error("Error updating appeal:", error);
     }
@@ -462,7 +450,6 @@ function Appeals() {
         null,
         true
       );
-      alert("Ball muvaffaqiyatli saqlandi!");
       setBallModalOpen(false);
       setEnteredBall("");
       await fetchAppeals(); // ro'yxatni yangilash
@@ -471,7 +458,6 @@ function Appeals() {
       alert("Ball yuborilmadi");
     }
   };
-
   return (
     <div>
       <Sidebar />
@@ -755,10 +741,10 @@ function Appeals() {
                 Sana
               </th>
               <th className="border border-gray-300 px-1 py-1 text-[14px]">
-                Status
+                Manzil
               </th>
               <th className="border border-gray-300 px-1 py-1 text-[14px]">
-                Manzil
+                Status
               </th>
               <th className="border border-gray-300 px-1 py-1 text-[14px]">
                 Ball
@@ -806,11 +792,20 @@ function Appeals() {
                 <td className="border border-gray-200 px-1 py-1 text-[14px]">
                   {new Date(appeal.createdAt).toLocaleString()}
                 </td>
-                <td className="border border-gray-200 px-1 py-1 text-[12px]">
-                  {appeal?.district?.region.name}
-                  <br />
-                  {appeal?.district?.name}
-                </td>
+                {appeal.isForeign ? (
+                  <td className="border border-gray-200 px-1 py-1 text-[12px]">
+                    {appeal?.country}
+                    <br />
+                    {appeal?.city}
+                  </td>
+                ) : (
+                  <td className="border border-gray-200 px-1 py-1 text-[12px]">
+                    {appeal?.district?.region.name}
+                    <br />
+                    {appeal?.district?.name}
+                  </td>
+                )}
+
                 <td className="border border-gray-200 px-1 py-1 text-[10px]">
                   {appeal.status === 1 && "Telefon raqam kiritgan"}
                   {appeal.status === 2 && "Ma'lumot kiritgan"}
@@ -818,24 +813,17 @@ function Appeals() {
                   {appeal.status === 4 && "Shartnoma olgan"}
                 </td>
 
-                {appeal.educationField?.ijodiy ||
-                appeal.educationField?.educationForm?.educationType?.id == 2 ? (
-                  <td className="border border-gray-200 px-1 py-1 text-[14px]">
-                    <button
-                      className="bg-blue-600 rounded p-1 text-white"
-                      onClick={() => {
-                        setSelectedAppealId(appeal.id);
-                        setBallModalOpen(true);
-                      }}
-                    >
-                      {appeal.ball ? appeal.ball : "0.0"}
-                    </button>
-                  </td>
-                ) : (
-                  <td className="border border-gray-200 px-1 py-1 text-[14px]">
-                    {appeal.ball}
-                  </td>
-                )}
+                <td className="border border-gray-200 px-1 py-1 text-[14px]">
+                  <button
+                    className="bg-blue-600 rounded p-1 text-white"
+                    onClick={() => {
+                      setSelectedAppealId(appeal.id);
+                      setBallModalOpen(true);
+                    }}
+                  >
+                    {appeal.ball ? appeal.ball : "0.0"}
+                  </button>
+                </td>
 
                 <td className="border border-gray-200 px-1 py-1 text-[14px] d-flex gap-1">
                   <button
@@ -860,30 +848,28 @@ function Appeals() {
                       />
                     </svg>
                   </button>
-                  {appeal?.ball > 40 && (
-                    <button
-                      className="text-white bg-green-600 rounded p-1 hover:underline"
-                      onClick={() => handleDownloadPDF(appeal.phone)}
+                  <button
+                    className="text-white bg-green-600 rounded p-1 hover:underline"
+                    onClick={() => handleDownloadPDF(appeal.phone)}
+                  >
+                    <svg
+                      className="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
                     >
-                      <svg
-                        className="w-6 h-6 text-gray-800 dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
-                        />
-                      </svg>
-                    </button>
-                  )}
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
+                      />
+                    </svg>
+                  </button>
                 </td>
               </tr>
             ))}
@@ -1092,17 +1078,11 @@ function Appeals() {
                   >
                     <option value="">Yo'nalishni tanlang</option>
                     {educationField?.length > 0 ? (
-                      educationField.map((item) => {
-                        if (item.isActive === true) {
-                          return (
-                            <option key={item.id} value={item.id}>
-                              {item.name}
-                            </option>
-                          );
-                        } else {
-                          return null;
-                        }
-                      })
+                      educationField.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.name}
+                        </option>
+                      ))
                     ) : (
                       <option value="">Ma'lumot mavjud emas</option>
                     )}
