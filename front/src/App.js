@@ -27,6 +27,12 @@ import AgentList from "./admin/admin/AgentList";
 import Operators from "./admin/admin/Operators";
 import Appeals from "./admin/admin/Appeals";
 
+
+import AdminHomeUserManager from "./admin/admin_manager/AdminHome";
+import AgentListManager from "./admin/admin_manager/AgentList";
+import OperatorsManager from "./admin/admin_manager/Operators";
+import AppealsManager from "./admin/admin_manager/Appeals";
+
 // agent
 
 import AdminHomeAgent from "./admin/agent/AdminHome";
@@ -110,6 +116,11 @@ function App() {
         <Route path={"/admin/agent"} element={<AgentList />} />
         <Route path={"/admin/operator"} element={<Operators />} />
         <Route path={"/admin/appeal"} element={<Appeals />} />
+        {/*  app admins */}
+        <Route path={"/manager/home"} element={<AdminHomeUserManager />} />
+        <Route path={"/manager/agent"} element={<AgentListManager />} />
+        <Route path={"/manager/operator"} element={<OperatorsManager />} />
+        <Route path={"/manager/appeal"} element={<AppealsManager />} />
 
         {/*agent*/}
         <Route path={"/agent/home"} element={<AdminHomeAgent />} />
