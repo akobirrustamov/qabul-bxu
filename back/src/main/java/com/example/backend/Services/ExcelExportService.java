@@ -45,7 +45,7 @@ public class ExcelExportService {
             String[] headers = {
                     "№", "Ism", "Familia", "Otasining ismi", "Passport raqami", "JSHR", "Telefon",
                     "Ro'yxatdan o'tgan sana", "Ta'lim turi", "Ta'lim shakli", "Yo'nalishi",
-                    "To'plangan bal", "Agent", "Viloyat", "Tuman"
+                    "To'plangan bal", "Agent", "Viloyat", "Tuman", "Shartnoma olgan"
             };
 
             for (int i = 0; i < headers.length; i++) {
@@ -106,6 +106,29 @@ public class ExcelExportService {
                     row.createCell(colIdx++).setCellValue(""); // Viloyat
                     row.createCell(colIdx++).setCellValue(""); // Tuman
                 }
+
+                // Shartnoma olgan - based on status
+                String statusText = "";
+                Integer status = abuturient.getStatus();
+                if (status != null) {
+                    switch (status) {
+                        case 1:
+                            statusText = "Telefon raqam kiritgan";
+                            break;
+                        case 2:
+                            statusText = "Ma'lumot kiritgan";
+                            break;
+                        case 3:
+                            statusText = "Test yechgan";
+                            break;
+                        case 4:
+                            statusText = "Shartnoma olgan";
+                            break;
+                        default:
+                            statusText = "";
+                    }
+                }
+                row.createCell(colIdx++).setCellValue(statusText);
             }
 
             workbook.write(out);

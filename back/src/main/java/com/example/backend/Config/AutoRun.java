@@ -36,6 +36,7 @@ public class AutoRun implements CommandLineRunner {
         if (roleRepo.findAll().isEmpty()) {
             List<Role> savedRoles = saveRoles();
         }
+
         Optional<User> userByPhone = userRepo.findByPhone(adminPhone);
         saveUser(adminPhone, userByPhone);
         if(educationLanguageRepo.findAll().isEmpty()) {
@@ -70,6 +71,17 @@ public class AutoRun implements CommandLineRunner {
         }
         if(regionRepo.findAll().isEmpty()) {
             saveAllRegions();
+        }
+
+        Optional<User> byPhone = userRepo.findByPhone("943225775");
+        if(byPhone.isEmpty()){
+            User ulug = User.builder()
+                    .phone("943225775")
+                    .name("Ulug'bek Ravshanovich")
+                    .password(passwordEncoder.encode("943225775"))
+                    .roles(List.of(roleRepo.findByName(UserRoles.ROLE_DATA_MANAGER)))
+                    .build();
+            userRepo.save(ulug);
         }
     }
 
