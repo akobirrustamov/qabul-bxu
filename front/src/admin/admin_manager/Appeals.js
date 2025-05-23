@@ -73,7 +73,6 @@ function Appeals() {
       );
       setAppeals(response.data.content);
 
-      console.log(response.data);
       setPagination((prev) => ({
         ...prev,
         totalPages: response.data.totalPages,

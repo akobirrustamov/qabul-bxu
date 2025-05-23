@@ -67,16 +67,16 @@ const LoginAdmin = () => {
 
       // Navigate based on role
       if (roles[0].name === "ROLE_SUPER_ADMIN" && response.error === false) {
-        setTimeout(() => navigate("/dashboard"), 2000);
+        setTimeout(() => navigate("/dashboard"), 500);
       } else if (roles[0].name === "ROLE_ADMIN" && response.error === false) {
-        setTimeout(() => navigate("/admin/home"), 2000);
+        setTimeout(() => navigate("/admin/home"), 500);
       } else if (roles[0].name === "ROLE_AGENT" && response.error === false) {
-        setTimeout(() => navigate("/agent/appeals"), 2000);
+        setTimeout(() => navigate("/agent/appeals"), 500);
       } else if (
         roles[0].name === "ROLE_DATA_MANAGER" &&
         response.error === false
       ) {
-        setTimeout(() => navigate("/manager/home"), 2000);
+        setTimeout(() => navigate("/manager/home"), 500);
       }
     } catch (error) {
       console.error("Login error:", error);
