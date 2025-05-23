@@ -139,6 +139,8 @@
         @GetMapping("/contract/{phone}")
         public void getAllAbuturientContract(@PathVariable String phone, HttpServletResponse response) {
             Abuturient abuturient = abuturientRepo.findByPhone(phone);
+            abuturient.setStatus(4);
+            abuturientRepo.save(abuturient);
             if (abuturient == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
@@ -223,7 +225,7 @@
 
                 paymentCell.addElement(new Paragraph("TO'LOV UCHUN!!!", boldFont));
                 paymentCell.addElement(new Paragraph("SHARTNOMA Nº K-" + abuturient.getContractNumber() + " shartnomaga asosan", regularFont));
-                paymentCell.addElement(new Paragraph(fullName + "ning kontrakt pull ko'chirildi", regularFont));
+                paymentCell.addElement(new Paragraph(fullName + "ning kontrakt puli ko'chirildi", regularFont));
 
 // Jadvalga TO‘LOV hujayrasini qo‘shish
                 headerTable.addCell(paymentCell);
@@ -241,7 +243,7 @@
 
 
 
-                Paragraph paragraph2 = new Paragraph("O'zbekiston Respublikasi Prezidentining 2021 yil 22-iyundagi PQ-5157 son qarori, Vazirlar Mahkamasining 2017 yil 20 -iyundagi 393-son qarori va institut kengashining tegishli qarori asosida, bir tomondan BUXORO XALQARO UNIVERSITERI (keyingi o' rinlarda \"Ta'lim muassasasi\") nomidan rektor Baratov Sharif Ramazonovich , ikkinchi tomondan talabalikka tavsiya etilgan talabgor "+fullName+" (keyingi o'rinlarda \"Ta'lim oluvchi\"), birgalikda ”tomonlar” deb ataladigan shaxslar mazkur shartnomani quyidagicha tuzdilar.", regularFont);
+                Paragraph paragraph2 = new Paragraph("O'zbekiston Respublikasi Prezidentining 2021 yil 22-iyundagi PQ-5157 son qarori, Vazirlar Mahkamasining 2017 yil 20 -iyundagi 393-son qarori va universitet kengashining tegishli qarori asosida, bir tomondan BUXORO XALQARO UNIVERSITERI (keyingi o' rinlarda \"Ta'lim muassasasi\") nomidan rektor Baratov Sharif Ramazonovich , ikkinchi tomondan talabalikka tavsiya etilgan talabgor "+fullName+" (keyingi o'rinlarda \"Ta'lim oluvchi\"), birgalikda ”tomonlar” deb ataladigan shaxslar mazkur shartnomani quyidagicha tuzdilar.", regularFont);
                 paragraph2.setSpacingBefore(2f);
                 document.add(paragraph2);
                 //                -----
@@ -299,9 +301,9 @@
                 paragraph5.setAlignment(Element.ALIGN_CENTER);
                 document.add(paragraph5);
                 //    -----------
-                Paragraph paragraph7 = new Paragraph("        2.1 ”Ta'lim muassasasi”da o'qish davrida ta'lim xizmatini ko'rsatish narxi institut haqiqiy xarajatlarining kalkulyatsiyasi asosida hisoblanadi.\n" +
-                        "        2.2 Ushbu shartnoma bo'yicha ta'lim oluvchini bir o'quv yili davomida o'qitish uchun to'lov miqdori "+abuturient.getEducationField().getPrice().toString()+"  so'mni (stipendiyasiz) tashkil etadi va ushbu to'lov miqdorining 50 % har o'quv yilining 1-oktyabr kuniga qadar qolgan qismi esa keyingi yilning 1-mayigacha to'lanishi shart. Bunda to'lov miqdorini hisoblash ta'lim oluvchini talabalikka qabul qilingan kundan boshlab hisoblanadi.\n" +
-                        "        2.3 Talabalar orasidan joriy o'quv yili (sentyabrdan-iyul oyigacha) davrida o'qishini boshqa davlat va nodavlat institutlariga ko'chirishi yoki o'z xoxishiga binoan talabalik safidan chetlashtirish maqsadida murojaat qilganda, shartnomada belgilangan bir yillik to'lov-kontrakt miqdori O'zbekiston Respublikasi Oliy va o'rta maxsus ta'lim vazirining 2012 yil 28 dekabr kunidagi 508- sonli buyrug'ida ko'rsatilgan tartibda talabadan saqlanib qolinadi.", regularFont);
+                Paragraph paragraph7 = new Paragraph("        2.1 ”Ta'lim muassasasi”da o'qish davrida ta'lim xizmatini ko'rsatish narxi universitet haqiqiy xarajatlarining kalkulyatsiyasi asosida hisoblanadi.\n" +
+                        "        2.2 Ushbu shartnoma bo'yicha ta'lim oluvchini bir o'quv yili davomida o'qitish uchun to'lov miqdori "+abuturient.getEducationField().getPrice().toString()+"  so'mni (stipendiyasiz) tashkil etadi va ushbu to'lov miqdorining 50 % har o'quv yilining 1-oktyabr kuniga qadar, qolgan qismi esa keyingi yilning 1-mayigacha to'lanishi shart. Bunda to'lov miqdorini hisoblash ta'lim oluvchini talabalikka qabul qilingan kundan boshlab hisoblanadi.\n" +
+                        "        2.3 Talabalar orasidan joriy o'quv yili (sentyabrdan-iyul oyigacha) davrida o'qishini boshqa davlat va nodavlat oliy ta'lim muassasalariga ko'chirishi yoki o'z xoxishiga binoan talabalik safidan chetlashtirish maqsadida murojaat qilganda, shartnomada belgilangan bir yillik to'lov-kontrakt miqdori O'zbekiston Respublikasi Oliy va o'rta maxsus ta'lim vazirining 2012 yil 28 dekabr kunidagi 508- sonli buyrug'ida ko'rsatilgan tartibda talabadan saqlanib qolinadi.", regularFont);
                 paragraph7.setSpacingAfter(2f);
                 document.add(paragraph7);
                 //   -----------------
@@ -317,11 +319,11 @@
                 //    -----------
                 Paragraph paragraph9 = new Paragraph("   3.1. Ta'lim muassasasi majburiyatlari:\n" +
                         "         -O'qitish uchun belgilangan dastlabki to'lov miqdorini (50% dan kam bo'lmagan) amalga oshirgandan so'ng, ”Ta'lim oluvchi”ni buyruq asosida talabalikka qabul qilish;\n" +
-                        "         -Ta'lim oluvchi kontrakt to'lovini amalga oshirgandan so'ng ”Talabalikka qabul qilish” burug'i o'quv jarayonlari boshlangan kundan chiqoriladi.\n" +
+                        "         -Ta'lim oluvchi kontrakt to'lovini amalga oshirgandan so'ng ”Talabalikka qabul qilish” burug'i o'quv jarayonlari boshlangan kundan chiqariladi.\n" +
                         "         -Ta'lim oluvchiga o'qishi uchun O'zbekiston Respublikasining ”Ta'lim to'g'risida”gi Qonuni va ”Ta'lim muassasasi” Ustavida nazarda tutilgan zarur shart-sharoitlarga muvofiq sharoitlarni yaratib berish;\n" +
-                        "         -Ta'lim oluvchining huquq va erkinliklari, qonuniy manfaatlari hamda ta'lim muassasasi Ustaviga muvofiq professoro'qituvchilar tomonidan o'zlarining funksional vazifalarini to'laqonli bajarishini ta'minlash;\n" +
+                        "         -Ta'lim oluvchining huquq va erkinliklari, qonuniy manfaatlari hamda ta'lim muassasasi Ustaviga muvofiq professor o'qituvchilar tomonidan o'zlarining funksional vazifalarini to'laqonli bajarishini ta'minlash;\n" +
                         "         -Ta'lim oluvchini tahsil olayotgan ta'lim yo'nalishi (mutaxassisligi) bo'yicha tasdiqlangan o'quv rejasi va dasturlariga muvofiq davlat ta'lim standarti talablari darajasida tayyorlash;\n" +
-                        "         -Respublikada belgilangan Mehnatga haq to'lashning eng kam miqdori yoki sifatli ta'lim xizmatlari ko'rsatish bilan bog'liq tariflar o'zgargan taqdirda o'qitish uchun belgilangan to'lov miqdori institut kengashi qarori asosida ta'lim oluvchini 1 oy oldin xabardor qilish.", regularFont);
+                        "         -Respublikada belgilangan Mehnatga haq to'lashning eng kam miqdori yoki sifatli ta'lim xizmatlari ko'rsatish bilan bog'liq tariflar o'zgargan taqdirda o'qitish uchun belgilangan to'lov miqdori universitet kengashi qarori asosida ta'lim oluvchini 1 oy oldin xabardor qilish.", regularFont);
                 paragraph9.setSpacingAfter(2f);
                 document.add(paragraph9);
                 //    -----------
@@ -421,7 +423,7 @@
 // Institut haqida ma'lumot qo‘shish
                 leftCell1.addElement(new Paragraph("BUXORO XALQARO UNIVERSITETI", boldFont));
                 leftCell1.addElement(new Paragraph("Manzil: Buxoro viloyati, Kogon tumani, B.Naqshband M.F.Y Abay ko'chasi 20 uy", regularFont));
-                leftCell1.addElement(new Paragraph("Telefon raqami: 55-305-55-55, 95-608-01-00, 95-604-01-00, 94-32254747, 05-04", regularFont));
+                leftCell1.addElement(new Paragraph("Telefon raqami: 55-309-99-99, 99-773-17-37, 94-322-5775", regularFont));
                 leftCell1.addElement(new Paragraph("STIR: 308196898", regularFont));
                 leftCell1.addElement(new Paragraph("MFO: 00873", regularFont));
                 leftCell1.addElement(new Paragraph("Bank nomi: 'Asaka bank' AJ Buxoro BXM", regularFont));
@@ -431,7 +433,7 @@
                 PdfPTable rectorTable = new PdfPTable(2); // 2 ta ustunli ichki jadval (matn + logo)
                 rectorTable.setWidths(new float[]{1, 1}); // Ustun kengligi 50% - 50%
 
-                PdfPCell rectorTextCell = new PdfPCell(new Paragraph("Rektor:", regularFont));
+                PdfPCell rectorTextCell = new PdfPCell(new Paragraph("Rektor: Sh.R.Barotov", regularFont));
                 rectorTextCell.setBorder(Rectangle.NO_BORDER);
                 rectorTextCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 rectorTable.addCell(rectorTextCell);
@@ -463,7 +465,7 @@
                 rightCell1.addElement(new Paragraph("FISH: " + fullName, boldFont));
                 rightCell1.addElement(new Paragraph("Men shartnoma bilan to'liq tanishdim", regularFont));
                 rightCell1.addElement(new Paragraph("F.I.O: _____", regularFont));
-                rightCell1.addElement(new Paragraph("Talim oluvehining imzosi: (_____)", regularFont));
+                rightCell1.addElement(new Paragraph("Ta'lim oluvchining imzosi: (_____)", regularFont));
                 endTable.addCell(rightCell1);
 
 // Jadvalni hujjatga qo‘shish
