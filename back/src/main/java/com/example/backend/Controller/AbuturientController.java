@@ -445,8 +445,8 @@
                 logoCell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
                 try {
-//                    Image logo1 = Image.getInstance(System.getProperty("user.home") + "/Downloads/logo1.png");
-                    Image logo1 = Image.getInstance("./logo1.png");
+                    Image logo1 = Image.getInstance(System.getProperty("user.home") + "/Downloads/logo1.png");
+//                    Image logo1 = Image.getInstance("./logo1.png");
                     logo1.scaleToFit(100, 100); // Logoni o‘lchamini moslashtirish
                     logoCell1.addElement(logo1); // TO‘G‘RI ISHLATISH
                 } catch (Exception e) {
