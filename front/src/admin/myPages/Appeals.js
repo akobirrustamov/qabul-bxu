@@ -397,18 +397,29 @@ function Appeals() {
   };
   const validateInputs = () => {
     if (
-      editData.passportPin.length !== 14 ||
-      !/^[A-Z]{2}\d{7}$/.test(editData.passportNumber) ||
-      !editData.firstName.trim() ||
-      !editData.lastName.trim() ||
-      !editData.fatherName.trim() ||
-      !editData.appealTypeId ||
-      !editData.educationTypeId ||
-      !editData.educationFormId ||
-      !editData.educationFieldId
+        editData.passportPin.length == 0 ||
+        !editData.firstName.trim() ||
+        !editData.lastName.trim() ||
+        !editData.appealTypeId ||
+        !editData.educationTypeId ||
+        !editData.educationFormId ||
+        !editData.educationFieldId
+    ) {
+      return true;
+    }
+    if (
+        editData.passportPin.length !== 14 ||
+        !/^[A-Z]{2}\d{7}$/.test(editData.passportNumber) ||
+        !editData.firstName.trim() ||
+        !editData.lastName.trim() ||
+        !editData.appealTypeId ||
+        !editData.educationTypeId ||
+        !editData.educationFormId ||
+        !editData.educationFieldId
     ) {
       return false;
     }
+
     return true;
   };
   const handleEditSubmit = async () => {
