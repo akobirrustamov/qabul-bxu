@@ -66,14 +66,16 @@ const LoginAdmin = () => {
       // Show success toast
 
       // Navigate based on role
-      alert(JSON.stringify(roles))
       if (roles[0].name === "ROLE_SUPER_ADMIN" && response.error === false) {
         setTimeout(() => navigate("/dashboard"), 500);
       } else if (roles[0].name === "ROLE_ADMIN" && response.error === false) {
         setTimeout(() => navigate("/admin/home"), 500);
       } else if (roles[0].name === "ROLE_AGENT" && response.error === false) {
         setTimeout(() => navigate("/agent/appeals"), 500);
-      } else if (roles[0].name === "ROLE_DATA_MANAGER" && response.error === false) {
+      } else if (
+        roles[0].name === "ROLE_DATA_MANAGER" &&
+        response.error === false
+      ) {
         setTimeout(() => navigate("/manager/home"), 500);
       }
     } catch (error) {
